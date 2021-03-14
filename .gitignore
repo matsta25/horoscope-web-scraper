@@ -1,11 +1,13 @@
 HELP.md
 .gradle
 build/
-scrapedData/
-scrapedData.zip
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+
+### Custom ###
+scrapedData/
+scrapedData.zip
 
 ### STS ###
 .apt_generated

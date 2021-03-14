@@ -68,7 +68,7 @@ public class HoroscopeService {
     }
 
     private void saveDataToCsv(List<String[]> csvData, String zodiacSign) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(".\\" + SCRAPED_DATA_DIR + "\\" + zodiacSign + ".csv"))) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter("./" + SCRAPED_DATA_DIR + "/" + zodiacSign + ".csv"))) {
             writer.writeAll(csvData);
         } catch (IOException e) {
             e.printStackTrace();

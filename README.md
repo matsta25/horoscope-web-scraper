@@ -1,3 +1,3 @@
 # horoscope-web-scraper
 
-To get date go: http://localhost:8080/swagger-ui.html#/horoscope-controller/startHoroscopeScrappingUsingGET
+To get date click [HERE](https://horoscope-web-scraper.herokuapp.com/swagger-ui.html)

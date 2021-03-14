@@ -30,7 +30,7 @@ public class HoroscopeController {
             value = "/start-horoscope-scrapping",
             produces = "application/zip")
     public ResponseEntity<Resource> startHoroscopeScrapping(
-            @RequestParam(name = "endDate", defaultValue = "2021-3-1") String endDate,
+            @RequestParam(name = "endDate", defaultValue = "2021-3-10") String endDate,
             @RequestParam(name = "startDate", defaultValue = "2021-3-16") String startDate
     ) {
         this.horoscopeService.startHoroscopeScrapping(startDate, endDate);
@@ -43,7 +43,7 @@ public class HoroscopeController {
 
         InputStreamResource resource = null;
         try {
-            resource = new InputStreamResource(new FileInputStream("scrapedData.zip"));
+            resource = new InputStreamResource(new FileInputStream("./scrapedData.zip"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
