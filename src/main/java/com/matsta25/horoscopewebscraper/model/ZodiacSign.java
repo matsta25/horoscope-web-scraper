@@ -1,18 +1,18 @@
 package com.matsta25.horoscopewebscraper.model;
 
 public enum ZodiacSign {
-    Aries("baran"),
-    Taurus("byk"),
-    Gemini("bliznieta"),
-    Cancer("rak"),
-    Leo("lew"),
     Virgo("panna"),
     Libra("waga"),
     Scorpio("skorpion"),
     Sagittarius("strzelec"),
     Capricorn("koziorozec"),
     Aquarius("wodnik"),
-    Pisces("ryby");
+    Pisces("ryby"),
+    Aries("baran"),
+    Taurus("byk"),
+    Gemini("bliznieta"),
+    Cancer("rak"),
+    Leo("lew");
 
 
     public final String label;
