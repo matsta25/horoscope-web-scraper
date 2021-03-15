@@ -36,18 +36,18 @@ public class HoroscopeService {
             LocalDate date = LocalDate.parse(startDate, dtf);
             boolean hadData = true;
             while (hadData) {
-                if (
-                        date.isEqual(LocalDate.of(2020, 8, 9))
-                                || date.isEqual(LocalDate.of(2019, 7, 5))) {
-                    date = date.minusDays(1);
-                }
-
-                if (date.isEqual(LocalDate.parse(endDate, dtf))) {
+                if (date.isEqual(LocalDate.parse(endDate, dtf)) ||
+                        date.isEqual(LocalDate.of(2016, 5, 31))) {
                     hadData = false;
                     continue;
                 }
 
                 doc = getDocumentHtml(doc, zodiacSign.getLabel(), date.toString());
+
+                if (!isDataAvailable(doc)){
+                    date = date.minusDays(1);
+                    continue;
+                }
 
                 String datePlValue = getDatePlValue(doc);
 
@@ -65,6 +65,11 @@ public class HoroscopeService {
         }
 
         return "Success. Scraped " + rowsSum + " elements.";
+    }
+
+    private boolean isDataAvailable(Document doc) {
+        Elements datePl = doc.select(".date-container");
+        return datePl.first() != null;
     }
 
     private void saveDataToCsv(List<String[]> csvData, String zodiacSign) {
