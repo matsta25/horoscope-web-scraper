@@ -21,6 +21,8 @@ import java.util.List;
 public class HoroscopeService {
 
     public static final String SCRAPED_DATA_DIR = "scrapedData";
+    public static final char DELIMITER = ';';
+
     Logger logger = LoggerFactory.getLogger(HoroscopeService.class);
 
     @Value("${horoscope.url}")
@@ -36,7 +38,7 @@ public class HoroscopeService {
             LocalDate date = LocalDate.parse(startDate, dtf);
             boolean hadData = true;
             while (hadData) {
-                if (date.isEqual(LocalDate.parse(endDate, dtf)) ||
+                if (date.isBefore(LocalDate.parse(endDate, dtf)) ||
                         date.isEqual(LocalDate.of(2016, 5, 31))) {
                     hadData = false;
                     continue;
@@ -49,13 +51,11 @@ public class HoroscopeService {
                     continue;
                 }
 
-                String datePlValue = getDatePlValue(doc);
-
                 String horoscopePlValue = getHoroscopePlValue(doc);
 
-                String[] row = {zodiacSign.getLabel(), date.toString(), datePlValue, horoscopePlValue};
+                String[] row = {zodiacSign.getLabel(), date.toString(), horoscopePlValue};
 
-                logger.info(String.format("%s\t%s\t%s\t%s", zodiacSign.getLabel(), date.toString(), datePlValue, horoscopePlValue));
+                logger.info(String.format("%s\t%s\t%s", zodiacSign.getLabel(), date.toString(), horoscopePlValue));
                 csvData.add(row);
                 rowsSum++;
                 date = date.minusDays(1);
@@ -73,7 +73,13 @@ public class HoroscopeService {
     }
 
     private void saveDataToCsv(List<String[]> csvData, String zodiacSign) {
-        try (CSVWriter writer = new CSVWriter(new FileWriter("./" + SCRAPED_DATA_DIR + "/" + zodiacSign + ".csv"))) {
+        try (CSVWriter writer = new CSVWriter(
+                new FileWriter("./" + SCRAPED_DATA_DIR + "/" + zodiacSign + ".csv"),
+                DELIMITER,
+                CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                CSVWriter.DEFAULT_LINE_END
+        )) {
             writer.writeAll(csvData);
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,11 +97,5 @@ public class HoroscopeService {
 
     private String getHoroscopePlValue(Document doc) {
         return doc.select(".lead").first().childNodes().get(0).toString();
-    }
-
-    private String getDatePlValue(Document doc) {
-        Elements datePl = doc.select(".date-container");
-        String datePlValue = datePl.first().childNodes().get(0).toString();
-        return datePlValue.replace("\n", "");
     }
 }

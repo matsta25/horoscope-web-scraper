@@ -1,0 +1,1 @@
+GET http://localhost:8081/api/v1/start-horoscope-scrapping?endDate=2021-4-1&startDate=2021-4-30

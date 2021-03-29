@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDate;
 
 import static com.matsta25.horoscopewebscraper.util.ZipDirectory.zipDirectory;
 
