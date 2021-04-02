@@ -1,6 +1,11 @@
 package com.matsta25.horoscopewebscraper.controller;
 
+import static com.matsta25.horoscopewebscraper.util.ZipDirectory.zipDirectory;
+
 import com.matsta25.horoscopewebscraper.service.HoroscopeService;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -8,12 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import static com.matsta25.horoscopewebscraper.util.ZipDirectory.zipDirectory;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -25,13 +24,10 @@ public class HoroscopeController {
         this.horoscopeService = horoscopeService;
     }
 
-    @GetMapping(
-            value = "/start-horoscope-scrapping",
-            produces = "application/zip")
+    @GetMapping(value = "/start-horoscope-scrapping", produces = "application/zip")
     public ResponseEntity<Resource> startHoroscopeScrapping(
             @RequestParam(name = "endDate", defaultValue = "2021-3-10") String endDate,
-            @RequestParam(name = "startDate", defaultValue = "2021-3-16") String startDate
-    ) {
+            @RequestParam(name = "startDate", defaultValue = "2021-3-16") String startDate) {
         this.horoscopeService.startHoroscopeScrapping(startDate, endDate);
 
         try {
@@ -47,8 +43,7 @@ public class HoroscopeController {
             e.printStackTrace();
         }
 
-        return ResponseEntity
-                .ok()
+        return ResponseEntity.ok()
                 .header("Content-Disposition", "attachment; filename=\"scrapedData.zip\"")
                 .body(resource);
     }

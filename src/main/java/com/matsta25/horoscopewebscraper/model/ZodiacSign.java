@@ -14,7 +14,6 @@ public enum ZodiacSign {
     Cancer("rak"),
     Leo("lew");
 
-
     public final String label;
 
     private ZodiacSign(String label) {

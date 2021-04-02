@@ -1,12 +1,13 @@
 package com.matsta25.horoscopewebscraper.util;
+
+import static com.matsta25.horoscopewebscraper.service.HoroscopeService.SCRAPED_DATA_DIR;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import static com.matsta25.horoscopewebscraper.service.HoroscopeService.SCRAPED_DATA_DIR;
 
 public class ZipDirectory {
     public static void zipDirectory() throws IOException {
@@ -20,7 +21,8 @@ public class ZipDirectory {
         fos.close();
     }
 
-    private static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut) throws IOException {
+    private static void zipFile(File fileToZip, String fileName, ZipOutputStream zipOut)
+            throws IOException {
         if (fileToZip.isHidden()) {
             return;
         }

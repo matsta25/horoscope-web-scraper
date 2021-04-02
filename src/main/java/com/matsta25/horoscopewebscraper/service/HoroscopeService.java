@@ -2,6 +2,12 @@ package com.matsta25.horoscopewebscraper.service;
 
 import com.matsta25.horoscopewebscraper.model.ZodiacSign;
 import com.opencsv.CSVWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -9,13 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class HoroscopeService {
@@ -38,15 +37,15 @@ public class HoroscopeService {
             LocalDate date = LocalDate.parse(startDate, dtf);
             boolean hadData = true;
             while (hadData) {
-                if (date.isBefore(LocalDate.parse(endDate, dtf)) ||
-                        date.isEqual(LocalDate.of(2016, 5, 31))) {
+                if (date.isBefore(LocalDate.parse(endDate, dtf))
+                        || date.isEqual(LocalDate.of(2016, 5, 31))) {
                     hadData = false;
                     continue;
                 }
 
                 doc = getDocumentHtml(doc, zodiacSign.getLabel(), date.toString());
 
-                if (!isDataAvailable(doc)){
+                if (!isDataAvailable(doc)) {
                     date = date.minusDays(1);
                     continue;
                 }
@@ -55,7 +54,10 @@ public class HoroscopeService {
 
                 String[] row = {zodiacSign.getLabel(), date.toString(), horoscopePlValue};
 
-                logger.info(String.format("%s\t%s\t%s", zodiacSign.getLabel(), date.toString(), horoscopePlValue));
+                logger.info(
+                        String.format(
+                                "%s\t%s\t%s",
+                                zodiacSign.getLabel(), date.toString(), horoscopePlValue));
                 csvData.add(row);
                 rowsSum++;
                 date = date.minusDays(1);
@@ -73,13 +75,13 @@ public class HoroscopeService {
     }
 
     private void saveDataToCsv(List<String[]> csvData, String zodiacSign) {
-        try (CSVWriter writer = new CSVWriter(
-                new FileWriter("./" + SCRAPED_DATA_DIR + "/" + zodiacSign + ".csv"),
-                DELIMITER,
-                CSVWriter.DEFAULT_QUOTE_CHARACTER,
-                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                CSVWriter.DEFAULT_LINE_END
-        )) {
+        try (CSVWriter writer =
+                new CSVWriter(
+                        new FileWriter("./" + SCRAPED_DATA_DIR + "/" + zodiacSign + ".csv"),
+                        DELIMITER,
+                        CSVWriter.DEFAULT_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END)) {
             writer.writeAll(csvData);
         } catch (IOException e) {
             e.printStackTrace();
