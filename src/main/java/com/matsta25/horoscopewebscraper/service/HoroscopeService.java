@@ -2,6 +2,7 @@ package com.matsta25.horoscopewebscraper.service;
 
 import com.matsta25.horoscopewebscraper.model.ZodiacSign;
 import com.opencsv.CSVWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,7 +23,7 @@ public class HoroscopeService {
     public static final String SCRAPED_DATA_DIR = "scrapedData";
     public static final char DELIMITER = ';';
 
-    Logger logger = LoggerFactory.getLogger(HoroscopeService.class);
+    Logger LOGGER = LoggerFactory.getLogger(HoroscopeService.class);
 
     @Value("${horoscope.url}")
     private String horoscopeUrl;
@@ -54,7 +55,7 @@ public class HoroscopeService {
 
                 String[] row = {zodiacSign.getLabel(), date.toString(), horoscopePlValue};
 
-                logger.info(
+                LOGGER.info(
                         String.format(
                                 "%s\t%s\t%s",
                                 zodiacSign.getLabel(), date.toString(), horoscopePlValue));
@@ -75,9 +76,14 @@ public class HoroscopeService {
     }
 
     private void saveDataToCsv(List<String[]> csvData, String zodiacSign) {
+        LOGGER.info(getPathWithCsvFile(zodiacSign));
+        new File(getPathWithCsvFile(zodiacSign))
+                .getParentFile()
+                .mkdirs();
         try (CSVWriter writer =
                 new CSVWriter(
-                        new FileWriter("./" + SCRAPED_DATA_DIR + "/" + zodiacSign + ".csv"),
+                        new FileWriter(
+                                getPathWithCsvFile(zodiacSign)),
                         DELIMITER,
                         CSVWriter.DEFAULT_QUOTE_CHARACTER,
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
@@ -86,6 +92,14 @@ public class HoroscopeService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getPathWithCsvFile(String zodiacSign) {
+        return System.getProperty("user.dir")
+                + SCRAPED_DATA_DIR
+                + "/"
+                + zodiacSign
+                + ".csv";
     }
 
     private Document getDocumentHtml(Document doc, String zodiacSign, String date) {
