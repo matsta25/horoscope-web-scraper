@@ -77,13 +77,10 @@ public class HoroscopeService {
 
     private void saveDataToCsv(List<String[]> csvData, String zodiacSign) {
         LOGGER.info(getPathWithCsvFile(zodiacSign));
-        new File(getPathWithCsvFile(zodiacSign))
-                .getParentFile()
-                .mkdirs();
+        new File(getPathWithCsvFile(zodiacSign)).getParentFile().mkdirs();
         try (CSVWriter writer =
                 new CSVWriter(
-                        new FileWriter(
-                                getPathWithCsvFile(zodiacSign)),
+                        new FileWriter(getPathWithCsvFile(zodiacSign)),
                         DELIMITER,
                         CSVWriter.DEFAULT_QUOTE_CHARACTER,
                         CSVWriter.DEFAULT_ESCAPE_CHARACTER,
@@ -95,11 +92,7 @@ public class HoroscopeService {
     }
 
     private String getPathWithCsvFile(String zodiacSign) {
-        return System.getProperty("user.dir")
-                + SCRAPED_DATA_DIR
-                + "/"
-                + zodiacSign
-                + ".csv";
+        return System.getProperty("user.dir") + File.separator + SCRAPED_DATA_DIR + File.separator + zodiacSign + ".csv";
     }
 
     private Document getDocumentHtml(Document doc, String zodiacSign, String date) {
