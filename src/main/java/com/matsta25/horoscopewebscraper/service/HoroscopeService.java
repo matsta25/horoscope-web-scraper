@@ -92,7 +92,12 @@ public class HoroscopeService {
     }
 
     private String getPathWithCsvFile(String zodiacSign) {
-        return System.getProperty("user.dir") + File.separator + SCRAPED_DATA_DIR + File.separator + zodiacSign + ".csv";
+        return System.getProperty("user.dir")
+                + File.separator
+                + SCRAPED_DATA_DIR
+                + File.separator
+                + zodiacSign
+                + ".csv";
     }
 
     private Document getDocumentHtml(Document doc, String zodiacSign, String date) {
